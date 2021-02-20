@@ -26,7 +26,7 @@ var MODE = {
 
 var CURRENTMODE = MODE.BACKEND;
 
-var BACKEND_HOST = process.env.BACKEND_HOST 
+var BACKEND_HOST = process.env.BACKEND_HOST || "localhost";
 
 var API_URL = "http://"+ BACKEND_HOST +":8089/"
 
