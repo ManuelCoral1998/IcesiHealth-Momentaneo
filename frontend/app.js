@@ -26,7 +26,9 @@ var MODE = {
 
 var CURRENTMODE = MODE.BACKEND;
 
-var API_URL = "http://127.0.0.1:8089/"
+var BACKEND_HOST = process.env.BACKEND_HOST 
+
+var API_URL = "http://"+ BACKEND_HOST +":8089/"
 
 app.post('/mode', function(req, res) {
   logger.debug('called the mode endpoint with mode: ' + req.query.mode);
