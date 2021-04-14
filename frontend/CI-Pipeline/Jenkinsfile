@@ -9,8 +9,15 @@ node {
 
   stage("Run test"){
     dir('frontend') {
-      sh 'npm install'
-      sh 'npm test'
+      docker.image('node:10.11.0-alpine').inside {
+        withEnv([
+          'npm_config_cache=npm-cache',
+          'HOME=.'
+        ]) {
+          sh 'npm install'
+          sh 'npm test'
+        }
+      }
     }
   }
 
