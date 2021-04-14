@@ -7,6 +7,15 @@ node {
     checkout scm
   }
 
+  stage("Run test"){
+    dir(frontend) {
+      docker.image('node:10.11.0-apline').inside {
+        sh 'npm install'
+        sh 'npm test'
+      }
+    }
+  }
+
   stage("Build frontend image"){
     dir('frontend') {
       frontendImage = docker.build('manuel11coral23/frontend')
