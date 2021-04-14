@@ -1,0 +1,26 @@
+node {
+  def frontendImage
+
+  step([$class: 'WsCleanup'])
+  
+  stage("Checkout code"){
+    checkout scm
+  }
+
+  stage("Build frontend image"){
+    dir('frontend') {
+      frontendImage = docker.build('manuel11coral23/frontend')
+    }
+  }
+
+  stage("Pushing image to registry"){
+    docker.withRegistry('', 'docker-hub') {
+      frontendImage.push('$BUILD_NUMBER')
+    }
+  }
+
+  stage("Removing unnecessary images"){
+    sh 'docker image prune -a -f --filter "label!=manuel11coral23/frontend"'
+  }
+
+}
