@@ -9,7 +9,7 @@ node {
 
   stage("Run test"){
     dir('frontend') {
-      docker.image('node:10.11.0-apline').inside {
+      docker.image('node:10.11.0-alpine').inside {
         sh 'npm install'
         sh 'npm test'
       }
