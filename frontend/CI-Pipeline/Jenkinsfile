@@ -9,11 +9,8 @@ node {
 
   stage("Run test"){
     dir('frontend') {
-      docker.image('node:10.11.0-alpine').inside {
-        sh 'chown -R $(whoami) ~/.npm'
-        sh 'npm install'
-        sh 'npm test'
-      }
+      sh 'npm install'
+      sh 'npm test'
     }
   }
 
