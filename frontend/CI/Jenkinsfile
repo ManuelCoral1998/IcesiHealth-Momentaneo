@@ -26,7 +26,8 @@ node {
   } catch (e) {
 
   } finally {
-    junit allowEmptyResults: true, keepLongStdio: true, testResults: '/var/lib/jenkins/workspace/CI/frontend/test-results.xml'
+    echo "pwd"
+    junit '**/frontend/test-results.xml'
   }
   
 
