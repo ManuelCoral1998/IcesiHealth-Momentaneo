@@ -26,7 +26,6 @@ node {
   } catch (e) {
 
   } finally {
-    echo "pwd"
     junit '**/frontend/test-results.xml'
   }
   
