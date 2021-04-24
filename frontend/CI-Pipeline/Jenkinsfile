@@ -1,22 +1,21 @@
 node {
-
   def frontendImage
 
   step([$class: 'WsCleanup'])
-
-  stage("Checkout code") {
+  
+  stage("Checkout code"){
     checkout scm
   }
 
   try {
-    stage("Execute test") {
-    dir('frontend') {
+    stage("Run test"){
+      dir('frontend') {
         docker.image('node:10.11.0-alpine').inside {
           withEnv([
-              /* Override the npm cache directory to avoid: EACCES: permission denied, mkdir '/.npm' */
-              'npm_config_cache=npm-cache',
-              /* Override HOME Path */
-              'HOME=.'
+            /* Override the npm cache directory to avoid: EACCES: permission denied, mkdir '/.npm' */
+            'npm_config_cache=npm-cache',
+            /* Override HOME Path */
+            'HOME=.'
           ]) {
             sh 'npm install'
             sh 'npm test'
@@ -29,33 +28,22 @@ node {
   } finally {
     junit '**/frontend/test-results.xml'
   }
+  
 
-  stage("Execute test") {
-    dir('frontend') {
-      docker.image('node:10.11.0-alpine').inside {
-        withEnv([
-            /* Override the npm cache directory to avoid: EACCES: permission denied, mkdir '/.npm' */
-            'npm_config_cache=npm-cache',
-            /* Override HOME Path */
-            'HOME=.'
-        ]) {
-          sh 'npm install'
-          sh 'npm test'
-        }
-      }
-    }
-  }
-
-  stage("Build frontend image") {
+  stage("Build frontend image"){
     dir('frontend') {
       frontendImage = docker.build('manuel11coral23/frontend')
     }
   }
 
-  stage("Push image to registry") {
+  stage("Pushing image to registry"){
     docker.withRegistry('', 'docker-hub') {
-      frontendImage.push()
+      frontendImage.push('$BUILD_NUMBER')
     }
+  }
+
+  stage("Removing unnecessary images"){
+    sh 'docker image prune -a -f --filter "label!=manuel11coral23/frontend"'
   }
 
 }
