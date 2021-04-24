@@ -16,7 +16,7 @@ node {
         site.yml \
         --private-key="${env.pemPath}" \
         -u ubuntu -vvv \
-        -e tag=latest \
+        -e tag=${params.TAG} \
         -e back_host=localhost
       """
     }

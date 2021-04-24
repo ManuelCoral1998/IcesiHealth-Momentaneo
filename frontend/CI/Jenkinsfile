@@ -46,4 +46,10 @@ node {
     sh 'docker image prune -a -f --filter "label!=manuel11coral23/frontend"'
   }
 
+  stage("Trigger CD") {
+    build job: 'CD', parameters: [
+      string(name: 'TAG', value: "$BUILD_NUMBER")
+    ]
+  }
+
 }
